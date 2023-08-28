@@ -1,9 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
-
-
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -15,22 +12,10 @@ import matplotlib.pyplot as plt
 from warnings import filterwarnings
 filterwarnings(action='ignore')
 
-
-# In[2]:
-
-
 df = pd.read_csv('titanic.csv')
 df.head(2)
 
-
-# In[3]:
-
-
 df.tail(2)
-
-
-# In[5]:
-
 
 def handle_non_numerical_data(df):
     
@@ -61,19 +46,11 @@ def handle_non_numerical_data(df):
 
     return df
 
-
-# In[6]:
-
-
 y_target = df['Survived']
 # Y_target is reshaped
 x_train = df[['Pclass', 'Age', 'Sex', 'SibSp', 'Parch', 'Fare','Embarked', 'Ticket']]
 x_train = handle_non_numerical_data(x_train)
 x_train.head()
-
-
-# In[7]:
-
 
 fare = pd.DataFrame(x_train['Fare'])
 # Normalizing
@@ -82,34 +59,18 @@ newfare = min_max_scaler.fit_transform(fare)
 x_train['Fare'] = newfare
 x_train
 
-
-# In[8]:
-
-
 x_train.isnull().sum()
-
-
-# In[9]:
-
 
 # Fill the NAN values with the median values in the datasets
 x_train['Age'] = x_train['Age'].fillna(x_train['Age'].median())
 print("The count of null values " , x_train['Age'].isnull().sum())
 print(x_train.head())
 
-
-# In[10]:
-
-
 x_train['Sex'] = x_train['Sex'].replace('male', 0)
 x_train['Sex'] = x_train['Sex'].replace('female', 1)
 # print(type(x_train))
 corr = x_train.corr()
 corr.style.background_gradient()
-
-
-# In[11]:
-
 
 def plot_corr(df,size=10):
     corr = df.corr()
@@ -121,38 +82,18 @@ def plot_corr(df,size=10):
 x_train.corr()
 corr.style.background_gradient()
 
-
-# In[12]:
-
-
 # Dividing the data into train and test data set
 X_train, X_test, Y_train, Y_test = train_test_split(x_train, y_target, test_size = 0.4, random_state = 40)
-
-
-# In[13]:
-
 
 clf = RandomForestClassifier()
 clf.fit(X_train, Y_train)
 
-
-# In[14]:
-
-
 print(clf.predict(X_test))
 print("Accuracy: ",clf.score(X_test, Y_test))
-
-
-# In[15]:
-
 
 ## Testing the model.
 test_df = pd.read_csv('test.csv')
 test_df.head(3)
-
-
-# In[16]:
-
 
 ### Preprocessing on the test data
 test_df = test_df[['Pclass', 'Age', 'Sex', 'SibSp', 'Parch', 'Fare', 'Ticket', 'Embarked']]
@@ -168,10 +109,6 @@ test_df['Sex'] = test_df['Sex'].replace('male', 0)
 test_df['Sex'] = test_df['Sex'].replace('female', 1)
 print(test_df.head())
 
-
-# In[17]:
-
-
 #Pie charts-It is used to visualize the distribution of categorical data.
 counts0=df['Survived'].value_counts()
 plt.title('The pie chart of passenegers who survived or not',size=24)
@@ -182,9 +119,6 @@ plt.show()
 # ### Observation
 # 
 # - 38% of pepole are survived and rest 62% died.
-
-# In[20]:
-
 
 import seaborn as sns
 # Count of passengers in each class
@@ -211,9 +145,6 @@ plt.show()
 # - Maximum people travelling through class 3
 # - 491 people travelling through class 3
 
-# In[21]:
-
-
 df['Sex'] = df['Sex'].replace(['male', 'female'], [0, 1])
 
 # Count of each gender
@@ -236,13 +167,8 @@ plt.xlabel('Gender')
 plt.ylabel('Count')
 plt.xticks([0, 1], ['Male', 'Female'])  # Set proper labels for x-axis
 
-
-# In[22]:
-
-
 plt.figure(figsize=(10,6))
 sns.heatmap(df.corr(),annot=True)
-
 
 # ### Final Observations
 # - Chances of female survival is more than male
@@ -255,10 +181,3 @@ sns.heatmap(df.corr(),annot=True)
 # - Most of Passengers on boarded on ship from port Southampton
 # - Most of passengers travelling in Titanic having age in the range of 20 to 40
 # - Most of passengers died from class 3
-# 
-
-# In[ ]:
-
-
-
-
